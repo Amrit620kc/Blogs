@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+{% block title %}blog{% endblock title %}
+{% load static %}
+{% block content %}
+<div class="container my-3">
+    {% for blog in blog %}
+    <!-- <div class="p-5 rounded mt-3">
+        <h3>{{blog.title}}</h3>
+        <p class="lead">{{blog.body|truncatewords:20}}</p>
+        <a class="btn btn-sm btn-secondary" href="/show_more/{{blog.url}}" role="button">SHOW MORE»</a> 
+    </div>-->
+
+    <div class="row">
+        <div class="col-md-5">
+            <!-- Content Column -->
+            <div class="content">
+                <span class="text-sm-start">{{blog.created_on}}</span>
+                <h2 class="fs-4"><a href="/show_more/{{blog.url}}">{{blog.title|safe}}</a></h2>
+                <p>{{blog.body|safe|truncatewords:40}}</p>
+                <!--<a class="btn btn-sm btn-secondary" href="/show_more/{{blog.url}}" role="button">SHOW MORE»</a>-->
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Image Column -->
+            <div class="image">
+                <img src="/media/{{blog.Image}}" style="height:180px; width:100%;" class="img-fluid" alt="Image">
+            </div>
+        </div>
+    </div>
+    <hr>
+    {% endfor %}
+</div>
+{% endblock content %}

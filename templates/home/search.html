@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+{% block title %}search{% endblock title %}
+{% load static %}
+{% block content %}
+
+<div class="container my-3">
+
+   
+    <div class="row">
+        <h2 class="text-success fs-3"> 𝒮𝐸𝒜𝑅𝒞𝐻 𝑅𝐸𝒮𝒰𝐿𝒯𝒮</h2>
+    <hr>
+    {% if posts|length < 1 %}
+    <p>ℕ𝕆 𝕊𝔼𝔸ℝℂℍ ℝ𝔼𝕊𝕌𝕃𝕋𝕊</p>
+    <p>Your search query--<b class="text-success">{{search}}</b> --did not match any documents.</p>
+    <p>Suggestions:</p>
+    <ul>
+        <li>Make sure that all words are spelled correctly.</li>
+        <li>Try diffrent keywords.</li>
+        <li>Try more general keywords.</li>
+        <li>Try fewer keywords.</li>
+    </ul>
+
+    {% endif %}
+        {% for posts in posts %}
+        <div class="col-md-5">
+            <!-- Content Column -->
+            <div class="content">
+                <h2>{{posts.title|safe}}</h2>
+                <p>{{posts.body|safe|truncatewords:20}}</p>
+                <a class="btn btn-sm btn-secondary" href="/show_more/{{posts.url}}" role="button">SHOW MORE»</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Image Column -->
+            <div class="image">
+                <img src="/media/{{posts.Image}}" style="height:150px; width:400px;" class="img-fluid rounded float-end" alt="Image">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+</div>
+
+{% endblock content %}

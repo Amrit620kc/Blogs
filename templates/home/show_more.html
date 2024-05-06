@@ -1,0 +1,101 @@
+{% extends 'base/base.html' %}
+{% block title %}show more{% endblock title %}
+{% load static %}
+{% load humanize %}
+{% load dict %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="content">
+                <h2>{{post.title|safe}}</h2>
+                <h6>Total views {{post.views}}</h6>
+                <p>{{post.body|safe}}</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+
+            <div class="image">
+                <img src="/media/{{post.Image}}" class="img-fluid" alt="Image">
+            </div>
+        </div>
+    </div>
+    <!--show comment with count number of comment-->
+    <h3>comments {{comments.count}}</h3>
+    <p>posts comments</p>
+    {% if user.is_authenticated %}
+    <form action="{% url 'commentt' %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id="comment"
+                    name="comment"></textarea>
+            </div>
+        </div>
+        <div class="mb-3">
+            <input type="hidden" class="form-control" name="postsno" value="{{post.id}}">
+            <input type="hidden" class="form-control" name="sno" value="">
+        </div>
+        <button type="submit" class="btn btn-sm btn-outline-secondary">submit</button>
+    </form>
+    <!--endform-->
+    {% else %}
+    <p class="text-dark fs-5"><b>Please login to post a comment & reply</b></p>
+    <hr>
+    {% endif %}
+    <br>
+    <!--showing comment-->
+    {% for comment in comments %}
+    <div class="comment-box">
+        <div class="comment-icon">
+            <i class="fas fa-comment"></i>
+        </div>
+        <div class="comment-text">
+
+            <p><b>{{comment.user.username}}</b> <span>{{comment.timestamp | naturaltime}}</span></p>
+            <p class="font-weight-bold">{{comment.comment}}</p>
+            <!--for reply button-->
+            {% if user.is_authenticated %}
+            <div class="mx-0">
+                <p class="d-inline-flex gap-1">
+                    <button class="btn btn-sm" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#reply{{comment.sno}}" aria-expanded="false"
+                        aria-controls="reply{{comment.sno}}">
+                        reply
+                    </button>
+                </p>
+
+
+                <div class="collapse" id="reply{{comment.sno}}">
+                    <div class="card card-body">
+                        <!--reply form-->
+                        <form action="{% url 'commentt' %}" method="post">
+                            {% csrf_token %}
+                            <label for="comment">Post a reply comment</label>
+                            <input type="text" class="form-control" placeholder="reply here" id="comment"
+                                name="comment">
+                            <input type="hidden" name="parentsno" value="{{comment.sno}}">
+                            <div class="mb-3">
+                                <input type="hidden" class="form-control" name="postsno" value="{{post.id}}">
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">submit</button>
+                        </form>
+                        {% for reply in replydict|get_val:comment.sno %}
+                        <div class="comment-icon">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <!--<p>{{reply.comment}}</p>-->
+                        <p><b>{{reply.user.username}}</b> <span>{{reply.timestamp | naturaltime}}</span></p>
+                        <p class="font-weight-bold">{{reply.comment}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

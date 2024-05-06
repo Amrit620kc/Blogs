@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>sudurtech/{% block title %}{% endblock title %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-dark text-light">
+    <div class="container-fluid">
+
+      <a class="navbar-brand text-danger" href="{% url 'home' %}">SUDURTECH</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active text-light" aria-current="page" href="{% url 'home' %}">HOME</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" href="{% url 'about' %}">ABOUT</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-light" href="{% url 'blog' %}">BLOGS</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-light" href="{% url 'contact' %}">CONTACT</a>
+          </li>
+        </ul>
+        <form action="{% url 'search' %}" method="get" class="d-flex" role="search">
+          <input class="form-control me-2" name="search" id="search" type="search" placeholder="Search in sudurtech"
+            aria-label="Search">
+          <button class="btn btn-outline-success mx-1" type="submit">Search</button>
+        </form>
+
+
+
+        <div class="dropdown">
+          {% if user.is_authenticated %}
+          <button class="btn btn-outline-success dropdown-toggle mx-1" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            {{request.user}}
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+          {% else %}
+          <!-- signup modal -->
+          <button type="button" class="btn btn-outline-success mx-1" data-bs-toggle="modal"
+            data-bs-target="#signupModal">
+            SIGNUP
+          </button>
+
+          <!-- login modal -->
+          <button type="button" class="btn btn-outline-success mt-32 mx-1" data-bs-toggle="modal"
+            data-bs-target="#loginModal">
+            LOGIN
+          </button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  {% block crousel %}{% endblock crousel %}
+
+  <!--Login Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="loginModal">Login Here</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="username" class="form-label">username</label>
+              <input type="text" class="form-control" id="username" required placeholder="enter your username"
+                name="username">
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">password</label>
+              <input type="password" class="form-control" id="password" name="password" required
+                placeholder="enter your password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+            <!-- signup modal -->
+            <p>if you are not signup
+              <!-- signupModal modal -->
+              <button type="button" class="btn btn-outline-success btn-sm mt-32 mx-1" data-bs-toggle="modal"
+                data-bs-target="#signupModal">
+                signup
+              </button>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--signup Modal -->
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="signupModal">Signup Here</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <form action="{% url 'signup' %}" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="username" class="form-label">username</label>
+              <input type="username" class="form-control" id="username" name="username" required
+                placeholder="enter your username only alphabetic & numberic">
+            </div>
+            <div class="mb-3">
+              <label for="fname" class="form-label">first name</label>
+              <input type="fname" class="form-control" id="fname" name="fname" required
+                placeholder="enter your first name">
+            </div>
+            <div class="mb-3">
+              <label for="lname" class="form-label">last name</label>
+              <input type="lname" class="form-control" id="lname" name="lname" required
+                placeholder="enter your last name">
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">email</label>
+              <input type="email" class="form-control" id="email" name="email" required placeholder="enter your email">
+            </div>
+            <div class="mb-3">
+              <label for="pass1" class="form-label">password</label>
+              <input type="pass1" class="form-control" id="pass1" name="pass1" required
+                placeholder="enter your password">
+            </div>
+            <div class="mb-3">
+              <label for="pass2" class="form-label">re-password</label>
+              <input type="pass2" class="form-control" id="pass2" name="pass2" required
+                placeholder="enter your re-password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+            <p>if you are already signup
+              <!-- login modal -->
+              <button type="button" class="btn btn-outline-success btn-sm mt-32 mx-1" data-bs-toggle="modal"
+                data-bs-target="#loginModal">
+                login
+              </button>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  {% for message in messages %}
+  <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+    <strong>Message:</strong> {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+
+
+
+  {% endfor %}
+
+
+  {% block content %}{% endblock content %}
+  {% block footer %}{% endblock footer %}
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>
