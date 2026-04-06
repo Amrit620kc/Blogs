@@ -12,7 +12,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     def image_tag(self):
-        return format_html('<img src="/media/{}" style="width:40px; heigth:40px; border-radius:20px;"/>'.format(self.image))
+        if not self.image:
+            return ""
+        return format_html('<img src="/media/{}" style="width:40px; height:40px; border-radius:20px;"/>', self.image.url)
+    image_tag.short_description = 'Image'
 
 
 class Post(models.Model):
