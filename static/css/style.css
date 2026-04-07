@@ -1,37 +1,44 @@
 .carousel img {
-    top: 0;
-    left: 0;
-    min-width: 100%;
-    height: 550px;
-    max-height: 550px;
-    width: auto;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 550px;
+  max-height: 550px;
+  width: auto;
 }
 
 footer {
-    background-color: #333; /* Background color of the footer */
-    color: #fff; /* Text color */
-    padding: 20px 0; /* Padding around content */
+  background-color: #333; /* Background color of the footer */
+  color: #fff; /* Text color */
+  padding: 20px 0; /* Padding around content */
 }
 
 .social-icons a {
-    color: #fff; /* Icon color */
-    margin-right: 10px; /* Spacing between icons */
-    font-size: 24px; /* Icon size */
+  color: #fff; /* Icon color */
+  margin-right: 10px; /* Spacing between icons */
+  font-size: 24px; /* Icon size */
 }
 
+.content h2 a,
+.content h2 a:hover,
+.content h2 a:focus {
+  text-decoration: none;
+  color: inherit;
+}
 
 /*for comment*/
 .comment-box {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-  }
-  
-  .comment-icon {
-    font-size: 24px;
-    margin-right: 10px;
-  }
-  
-  .comment-text p {
-    margin: 0;
-  }
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.comment-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.comment-text p {
+  margin: 0;
+}
+
