@@ -9,7 +9,9 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
+from decouple import config
+from dotenv import load_dotenv
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
@@ -23,14 +25,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(_3ebnx1pm)5g*ob(rmlw6ywj+kli+szl*)rfa1pv7m!!gi@4%'
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG") == "True"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS",
+    cast=lambda v: [i.strip() for i in v.split(",")]
+)
 # Application definition
 
 INSTALLED_APPS = [
@@ -83,23 +85,12 @@ WSGI_APPLICATION = 'blogproj.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'myblogdb',
-        'USER': 'postgres',
-        'PASSWORD': '9810789901',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }}
-
 
 
 # Password validation
